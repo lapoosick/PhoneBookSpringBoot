@@ -46,7 +46,7 @@ public class ContactsInMemoryRepository implements ContactsRepository {
     public GeneralResponse updateContact(Contact contact) {
         int contactId = contact.getId();
 
-        if (IntStream.range(1, contacts.size() + 1).noneMatch(c -> contactId == c)) {
+        if (IntStream.range(1, contacts.size() + 1).noneMatch(i -> i == contactId)) {
             return new GeneralResponse(false, "Контакт с таким id не существует.");
         }
 
