@@ -1,14 +1,16 @@
-package ru.academits.orlov.phonebookspringboot.services;
+package ru.academits.orlov.phonebookspringboot.repository;
 
-import ru.academits.orlov.phonebookspringboot.entities.Contact;
+import ru.academits.orlov.phonebookspringboot.entity.Contact;
 import ru.academits.orlov.phonebookspringboot.payload.GeneralResponse;
 
 import java.util.List;
 
-public interface ContactsService {
+public interface ContactsRepository {
     List<Contact> getContacts(String term);
 
     GeneralResponse saveContact(Contact contact);
+
+    GeneralResponse updateContact(Contact contact);
 
     GeneralResponse deleteContact(int id);
 }

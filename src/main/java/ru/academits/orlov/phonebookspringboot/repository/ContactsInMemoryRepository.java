@@ -1,7 +1,7 @@
-package ru.academits.orlov.phonebookspringboot.repositories;
+package ru.academits.orlov.phonebookspringboot.repository;
 
 import org.springframework.stereotype.Repository;
-import ru.academits.orlov.phonebookspringboot.entities.Contact;
+import ru.academits.orlov.phonebookspringboot.entity.Contact;
 import ru.academits.orlov.phonebookspringboot.payload.GeneralResponse;
 
 import java.util.ArrayList;
