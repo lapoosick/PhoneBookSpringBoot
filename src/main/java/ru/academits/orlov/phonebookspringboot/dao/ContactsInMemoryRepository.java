@@ -1,4 +1,4 @@
-package ru.academits.orlov.phonebookspringboot.repository;
+package ru.academits.orlov.phonebookspringboot.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.academits.orlov.phonebookspringboot.entity.Contact;

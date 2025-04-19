@@ -3,7 +3,7 @@ package ru.academits.orlov.phonebookspringboot.service;
 import org.springframework.stereotype.Service;
 import ru.academits.orlov.phonebookspringboot.entity.Contact;
 import ru.academits.orlov.phonebookspringboot.payload.GeneralResponse;
-import ru.academits.orlov.phonebookspringboot.repository.ContactsRepository;
+import ru.academits.orlov.phonebookspringboot.dao.ContactsRepository;
 
 import java.util.List;
 
