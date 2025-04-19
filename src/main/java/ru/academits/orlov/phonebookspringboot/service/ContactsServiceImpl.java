@@ -2,7 +2,7 @@ package ru.academits.orlov.phonebookspringboot.service;
 
 import org.springframework.stereotype.Service;
 import ru.academits.orlov.phonebookspringboot.entity.Contact;
-import ru.academits.orlov.phonebookspringboot.payload.GeneralResponse;
+import ru.academits.orlov.phonebookspringboot.dto.GeneralResponse;
 import ru.academits.orlov.phonebookspringboot.dao.ContactsRepository;
 
 import java.util.List;
@@ -23,15 +23,15 @@ public class ContactsServiceImpl implements ContactsService {
     @Override
     public GeneralResponse saveContact(Contact contact) {
         if (contact.getSurname() == null || contact.getSurname().isEmpty()) {
-            return new GeneralResponse(false, "Не указана фамилия.");
+            return GeneralResponse.getErrorResponse("Не указана фамилия.");
         }
 
         if (contact.getName() == null || contact.getName().isEmpty()) {
-            return new GeneralResponse(false, "Не указано имя.");
+            return GeneralResponse.getErrorResponse("Не указано имя.");
         }
 
         if (contact.getPhoneNumber() == null || contact.getPhoneNumber().isEmpty()) {
-            return new GeneralResponse(false, "Не указан телефон.");
+            return GeneralResponse.getErrorResponse("Не указан телефон.");
         }
 
         if (contact.getId() == 0) {
