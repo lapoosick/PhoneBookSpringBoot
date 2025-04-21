@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 
 @Repository
 public class ContactsInMemoryRepository implements ContactsRepository {
-    public static final List<Contact> contacts = new ArrayList<>();
+    private static final List<Contact> contacts = new ArrayList<>();
     private static final AtomicInteger newId = new AtomicInteger();
 
     @Override
