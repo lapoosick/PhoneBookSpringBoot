@@ -77,7 +77,6 @@ public class ContactsInMemoryRepository implements ContactsRepository {
                 return GeneralResponse.getErrorResponse("Переданный порядковый номер не принадлежит данному контакту.");
             }
 
-            repositoryContact.setOrdinalNumber(contact.getOrdinalNumber());
             repositoryContact.setSurname(contact.getSurname());
             repositoryContact.setName(contact.getName());
             repositoryContact.setPhoneNumber(contact.getPhoneNumber());
