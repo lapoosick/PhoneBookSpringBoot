@@ -1,9 +1,9 @@
 package ru.academits.orlov.phonebookspringboot.service;
 
 import org.springframework.stereotype.Service;
-import ru.academits.orlov.phonebookspringboot.entity.Contact;
-import ru.academits.orlov.phonebookspringboot.dto.GeneralResponse;
 import ru.academits.orlov.phonebookspringboot.dao.ContactsRepository;
+import ru.academits.orlov.phonebookspringboot.dto.GeneralResponse;
+import ru.academits.orlov.phonebookspringboot.entity.Contact;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class ContactsServiceImpl implements ContactsService {
     }
 
     @Override
-    public GeneralResponse saveContact(Contact contact) {
+    public GeneralResponse createContact(Contact contact) {
         if (contact.getSurname() == null || contact.getSurname().isEmpty()) {
             return GeneralResponse.getErrorResponse("Не указана фамилия.");
         }
@@ -35,7 +35,7 @@ public class ContactsServiceImpl implements ContactsService {
         }
 
         if (contact.getId() == 0) {
-            return contactsRepository.saveContact(contact);
+            return contactsRepository.createContact(contact);
         }
 
         return contactsRepository.updateContact(contact);

@@ -8,7 +8,7 @@ import java.util.List;
 public interface ContactsRepository {
     List<Contact> getContacts(String term);
 
-    GeneralResponse saveContact(Contact contact);
+    GeneralResponse createContact(Contact contact);
 
     GeneralResponse updateContact(Contact contact);
 
