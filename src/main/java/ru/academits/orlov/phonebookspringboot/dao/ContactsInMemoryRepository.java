@@ -37,8 +37,10 @@ public class ContactsInMemoryRepository implements ContactsRepository {
     @Override
     public GeneralResponse createContact(Contact contact) {
         synchronized (contacts) {
+            String contactPhoneNumber = contact.getPhoneNumber().trim();
+
             if (contacts.stream()
-                    .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contact.getPhoneNumber().trim()))) {
+                    .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contactPhoneNumber))) {
                 return GeneralResponse.getErrorResponse("Контакт с таким номером телефона уже существует.");
             }
 
@@ -48,7 +50,7 @@ public class ContactsInMemoryRepository implements ContactsRepository {
             }
 
             contacts.add(new Contact(newId.incrementAndGet(), newOrdinalNumber.incrementAndGet(),
-                    contact.getSurname().trim(), contact.getName().trim(), contact.getPhoneNumber().trim()));
+                    contact.getSurname().trim(), contact.getName().trim(), contactPhoneNumber));
 
             return GeneralResponse.getSuccessResponse();
         }
