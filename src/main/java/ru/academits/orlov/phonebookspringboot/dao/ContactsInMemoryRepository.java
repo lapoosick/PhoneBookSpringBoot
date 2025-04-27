@@ -67,19 +67,25 @@ public class ContactsInMemoryRepository implements ContactsRepository {
                 return GeneralResponse.getErrorResponse("Контакт с таким id не существует.");
             }
 
-            if (!contact.getPhoneNumber().equalsIgnoreCase(repositoryContact.getPhoneNumber())
+            String contactPhoneNumber = contact.getPhoneNumber();
+
+            if (!contactPhoneNumber.equalsIgnoreCase(repositoryContact.getPhoneNumber())
                     && contacts.stream()
-                    .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contact.getPhoneNumber()))) {
+                    .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contactPhoneNumber))) {
                 return GeneralResponse.getErrorResponse("Контакт с таким номером телефона уже существует.");
             }
 
-            if (contact.getOrdinalNumber() != repositoryContact.getOrdinalNumber()) {
+            int contactOrdinalNumber = contact.getOrdinalNumber();
+
+            if (contactOrdinalNumber != repositoryContact.getOrdinalNumber()
+                    && contactOrdinalNumber != 0) {
                 return GeneralResponse.getErrorResponse("Переданный порядковый номер не принадлежит данному контакту.");
             }
 
+            repositoryContact.setOrdinalNumber(contactOrdinalNumber);
             repositoryContact.setSurname(contact.getSurname());
             repositoryContact.setName(contact.getName());
-            repositoryContact.setPhoneNumber(contact.getPhoneNumber());
+            repositoryContact.setPhoneNumber(contactPhoneNumber);
 
             return GeneralResponse.getSuccessResponse();
         }
