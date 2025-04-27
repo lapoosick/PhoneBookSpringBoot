@@ -38,7 +38,7 @@ public class ContactsInMemoryRepository implements ContactsRepository {
     public GeneralResponse createContact(Contact contact) {
         synchronized (contacts) {
             if (contacts.stream()
-                    .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contact.getPhoneNumber()))) {
+                    .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contact.getPhoneNumber().trim()))) {
                 return GeneralResponse.getErrorResponse("Контакт с таким номером телефона уже существует.");
             }
 
@@ -47,9 +47,8 @@ public class ContactsInMemoryRepository implements ContactsRepository {
                 return GeneralResponse.getErrorResponse("Контакт с таким порядковым номером уже существует.");
             }
 
-            contact.setId(newId.incrementAndGet());
-            contact.setOrdinalNumber(newOrdinalNumber.incrementAndGet());
-            contacts.add(contact);
+            contacts.add(new Contact(newId.incrementAndGet(), newOrdinalNumber.incrementAndGet(),
+                    contact.getSurname().trim(), contact.getName().trim(), contact.getPhoneNumber().trim()));
 
             return GeneralResponse.getSuccessResponse();
         }
@@ -67,7 +66,7 @@ public class ContactsInMemoryRepository implements ContactsRepository {
                 return GeneralResponse.getErrorResponse("Контакт с таким id не существует.");
             }
 
-            String contactPhoneNumber = contact.getPhoneNumber();
+            String contactPhoneNumber = contact.getPhoneNumber().trim();
 
             if (!contactPhoneNumber.equalsIgnoreCase(repositoryContact.getPhoneNumber())
                     && contacts.stream()
@@ -83,8 +82,8 @@ public class ContactsInMemoryRepository implements ContactsRepository {
             }
 
             repositoryContact.setOrdinalNumber(contactOrdinalNumber);
-            repositoryContact.setSurname(contact.getSurname());
-            repositoryContact.setName(contact.getName());
+            repositoryContact.setSurname(contact.getSurname().trim());
+            repositoryContact.setName(contact.getName().trim());
             repositoryContact.setPhoneNumber(contactPhoneNumber);
 
             return GeneralResponse.getSuccessResponse();
