@@ -76,14 +76,6 @@ public class ContactsInMemoryRepository implements ContactsRepository {
                 return GeneralResponse.getErrorResponse("Контакт с таким номером телефона уже существует.");
             }
 
-            int contactOrdinalNumber = contact.getOrdinalNumber();
-
-            if (contactOrdinalNumber != repositoryContact.getOrdinalNumber()
-                    && contactOrdinalNumber != 0) {
-                return GeneralResponse.getErrorResponse("Переданный порядковый номер не принадлежит данному контакту.");
-            }
-
-            repositoryContact.setOrdinalNumber(contactOrdinalNumber);
             repositoryContact.setSurname(contact.getSurname().trim());
             repositoryContact.setName(contact.getName().trim());
             repositoryContact.setPhoneNumber(contactPhoneNumber);
