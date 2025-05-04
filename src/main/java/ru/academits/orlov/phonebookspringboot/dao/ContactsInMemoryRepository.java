@@ -35,14 +35,15 @@ public class ContactsInMemoryRepository implements ContactsRepository {
     @Override
     public GeneralResponse createContact(Contact contact) {
         synchronized (contacts) {
-            String contactPhoneNumber = contact.getPhoneNumber().trim();
+            String contactPhoneNumber = contact.getPhoneNumber();
 
-            if (contacts.stream()
-                    .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contactPhoneNumber))) {
+            if (contacts.stream().anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contactPhoneNumber))) {
                 return GeneralResponse.getErrorResponse("Контакт с номером телефона " + contactPhoneNumber + " уже существует.");
             }
 
-            contacts.add(new Contact(newId.incrementAndGet(), contact.getSurname().trim(), contact.getName().trim(), contactPhoneNumber));
+            contact.setId(newId.incrementAndGet());
+
+            contacts.add(contact);
 
             return GeneralResponse.getSuccessResponse();
         }
@@ -60,16 +61,15 @@ public class ContactsInMemoryRepository implements ContactsRepository {
                 return GeneralResponse.getErrorResponse("Контакт с id = " + contactId + " не найден.");
             }
 
-            String contactPhoneNumber = contact.getPhoneNumber().trim();
+            String contactPhoneNumber = contact.getPhoneNumber();
 
             if (!contactPhoneNumber.equalsIgnoreCase(repositoryContact.getPhoneNumber())
-                    && contacts.stream()
-                    .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contactPhoneNumber))) {
+                    && contacts.stream().anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contactPhoneNumber))) {
                 return GeneralResponse.getErrorResponse("Контакт с номером телефона " + contactPhoneNumber + " уже существует.");
             }
 
-            repositoryContact.setSurname(contact.getSurname().trim());
-            repositoryContact.setName(contact.getName().trim());
+            repositoryContact.setSurname(contact.getSurname());
+            repositoryContact.setName(contact.getName());
             repositoryContact.setPhoneNumber(contactPhoneNumber);
 
             return GeneralResponse.getSuccessResponse();

@@ -22,9 +22,13 @@ public class ContactsServiceImpl implements ContactsService {
 
     @Override
     public GeneralResponse createOrUpdateContact(Contact contact) {
-        isEmptyString(contact.getSurname());
-        isEmptyString(contact.getName());
-        isEmptyString(contact.getPhoneNumber());
+        try {
+            contact.setSurname(trimString(contact.getSurname()));
+            contact.setName(trimString(contact.getName()));
+            contact.setPhoneNumber(trimString(contact.getPhoneNumber()));
+        } catch (IllegalArgumentException e) {
+            return GeneralResponse.getErrorResponse(e.getMessage());
+        }
 
         if (contact.getId() == 0) {
             return contactsRepository.createContact(contact);
@@ -38,9 +42,11 @@ public class ContactsServiceImpl implements ContactsService {
         return contactsRepository.deleteContact(id);
     }
 
-    private void isEmptyString(String string) {
+    private static String trimString(String string) {
         if (string == null || string.isBlank()) {
             throw new IllegalArgumentException("Не заполнено обязательное поле.");
         }
+
+        return string.trim();
     }
 }
