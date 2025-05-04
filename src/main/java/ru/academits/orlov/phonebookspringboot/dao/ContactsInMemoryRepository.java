@@ -7,13 +7,11 @@ import ru.academits.orlov.phonebookspringboot.entity.Contact;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
 
 @Repository
 public class ContactsInMemoryRepository implements ContactsRepository {
     private static final List<Contact> contacts = new ArrayList<>();
     private static final AtomicInteger newId = new AtomicInteger();
-    private static final AtomicInteger newOrdinalNumber = new AtomicInteger();
 
     @Override
     public List<Contact> getContacts(String term) {
@@ -41,16 +39,10 @@ public class ContactsInMemoryRepository implements ContactsRepository {
 
             if (contacts.stream()
                     .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contactPhoneNumber))) {
-                return GeneralResponse.getErrorResponse("Контакт с таким номером телефона уже существует.");
+                return GeneralResponse.getErrorResponse("Контакт с номером телефона " + contactPhoneNumber + " уже существует.");
             }
 
-            if (contacts.stream()
-                    .anyMatch(c -> c.getOrdinalNumber() == contact.getOrdinalNumber())) {
-                return GeneralResponse.getErrorResponse("Контакт с таким порядковым номером уже существует.");
-            }
-
-            contacts.add(new Contact(newId.incrementAndGet(), newOrdinalNumber.incrementAndGet(),
-                    contact.getSurname().trim(), contact.getName().trim(), contactPhoneNumber));
+            contacts.add(new Contact(newId.incrementAndGet(), contact.getSurname().trim(), contact.getName().trim(), contactPhoneNumber));
 
             return GeneralResponse.getSuccessResponse();
         }
@@ -65,7 +57,7 @@ public class ContactsInMemoryRepository implements ContactsRepository {
                     .filter(c -> c.getId() == contactId).findFirst().orElse(null);
 
             if (repositoryContact == null) {
-                return GeneralResponse.getErrorResponse("Контакт с таким id не существует.");
+                return GeneralResponse.getErrorResponse("Контакт с id = " + contactId + " не найден.");
             }
 
             String contactPhoneNumber = contact.getPhoneNumber().trim();
@@ -73,7 +65,7 @@ public class ContactsInMemoryRepository implements ContactsRepository {
             if (!contactPhoneNumber.equalsIgnoreCase(repositoryContact.getPhoneNumber())
                     && contacts.stream()
                     .anyMatch(c -> c.getPhoneNumber().equalsIgnoreCase(contactPhoneNumber))) {
-                return GeneralResponse.getErrorResponse("Контакт с таким номером телефона уже существует.");
+                return GeneralResponse.getErrorResponse("Контакт с номером телефона " + contactPhoneNumber + " уже существует.");
             }
 
             repositoryContact.setSurname(contact.getSurname().trim());
@@ -91,17 +83,10 @@ public class ContactsInMemoryRepository implements ContactsRepository {
                     .filter(c -> c.getId() == id).findFirst().orElse(null);
 
             if (currentContact == null) {
-                return GeneralResponse.getErrorResponse("Не удалось удалить контакт.");
+                return GeneralResponse.getErrorResponse("Контакт с id = " + id + " не найден.");
             }
 
-            int currentContactOrdinalNumber = currentContact.getOrdinalNumber();
-
             contacts.remove(currentContact);
-
-            IntStream.range(currentContactOrdinalNumber - 1, contacts.size())
-                    .forEach(i -> contacts.get(i).setOrdinalNumber(contacts.get(i).getOrdinalNumber() - 1));
-
-            newOrdinalNumber.decrementAndGet();
 
             return GeneralResponse.getSuccessResponse();
         }

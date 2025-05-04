@@ -1,7 +1,7 @@
 package ru.academits.orlov.phonebookspringboot.dao;
 
-import ru.academits.orlov.phonebookspringboot.entity.Contact;
 import ru.academits.orlov.phonebookspringboot.dto.GeneralResponse;
+import ru.academits.orlov.phonebookspringboot.entity.Contact;
 
 import java.util.List;
 

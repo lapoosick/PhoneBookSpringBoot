@@ -21,18 +21,10 @@ public class ContactsServiceImpl implements ContactsService {
     }
 
     @Override
-    public GeneralResponse createContact(Contact contact) {
-        if (contact.getSurname() == null || contact.getSurname().isEmpty()) {
-            return GeneralResponse.getErrorResponse("Не указана фамилия.");
-        }
-
-        if (contact.getName() == null || contact.getName().isEmpty()) {
-            return GeneralResponse.getErrorResponse("Не указано имя.");
-        }
-
-        if (contact.getPhoneNumber() == null || contact.getPhoneNumber().isEmpty()) {
-            return GeneralResponse.getErrorResponse("Не указан телефон.");
-        }
+    public GeneralResponse createOrUpdateContact(Contact contact) {
+        isEmptyString(contact.getSurname());
+        isEmptyString(contact.getName());
+        isEmptyString(contact.getPhoneNumber());
 
         if (contact.getId() == 0) {
             return contactsRepository.createContact(contact);
@@ -44,5 +36,11 @@ public class ContactsServiceImpl implements ContactsService {
     @Override
     public GeneralResponse deleteContact(int id) {
         return contactsRepository.deleteContact(id);
+    }
+
+    private void isEmptyString(String string) {
+        if (string == null || string.isBlank()) {
+            throw new IllegalArgumentException("Не заполнено обязательное поле.");
+        }
     }
 }

@@ -22,8 +22,8 @@ public class ContactsController {
     }
 
     @PostMapping
-    public GeneralResponse createContact(@RequestBody Contact contact) {
-        return contactsService.createContact(contact);
+    public GeneralResponse createOrUpdateContact(@RequestBody Contact contact) {
+        return contactsService.createOrUpdateContact(contact);
     }
 
     @DeleteMapping("/{id}")
